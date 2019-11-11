@@ -1,0 +1,56 @@
+{
+  "generator-jhipster": {
+    "databaseType": "mongodb",
+    "devDatabaseType": "mongodb",
+    "enableHibernateCache": false,
+    "enableSwaggerCodegen": false,
+    "enableTranslation": true,
+    "jhiPrefix": "jhi",
+    "languages": [
+      "en",
+      "fr"
+    ],
+    "messageBroker": false,
+    "nativeLanguage": "en",
+    "packageName": "com.myapp.yourapp.ui",
+    "packageFolder": "com/myapp/yourapp/ui",
+    "prodDatabaseType": "mongodb",
+    "searchEngine": false,
+    "serviceDiscoveryType": false,
+    "skipClient": false,
+    "skipServer": false,
+    "testFrameworks": [
+      "protractor"
+    ],
+    "websocket": false,
+    "baseName": "ui",
+    "applicationType": "gateway",
+    "authenticationType": "jwt",
+    "cacheProvider": "no",
+    "buildTool": "maven",
+    "useSass": true,
+    "clientFramework": "react",
+    "jhipsterVersion": "6.5.0",
+    "skipUserManagement": false,
+    "clientPackageManager": "npm",
+    "serverPort": "8080",
+    "clientTheme": "none",
+    "clientThemeVariant": "",
+    "jwtSecretKey": "MWJhYzlmYjk1MTVkZDJkNzM0MjA1ZDg1NDg5NmE3YTljYjU2MmZlZTNiYjRmZjJjNDI5MjMwNGVjMGE2OWMwNDc2NzZmM2JmMDZjYTQ3MTQ2OWZkMDdiZDg1OTM5ODQ5YmQ4YjIwMWRiNTBhY2U4Y2QwMTE0N2Y0MDUyYjM1MjU=",
+    "embeddableLaunchScript": false,
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "blueprints": []
+  },
+  "entities": [
+    "Employee",
+    "Department",
+    "EmployeeLeave",
+    "LeaveRequest",
+    "Notification",
+    "MeetingRoom",
+    "Participant",
+    "Meeting"
+  ]
+}
