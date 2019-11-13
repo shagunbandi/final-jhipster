@@ -260,3 +260,25 @@ sudo chmod 777 /var/run/docker.sock
 ```
 docker login -u <username>
 ```
+
+# Jenkins Pipeline
+
+	node {
+	    stage("Git clone"){
+		git credentialsId: 'GIT_CRED', url: 'https://github.com/shagunbandi/final-jhipster'
+	    }
+
+	    stage("Maven Clean, Build, Docker Push for UI"){
+
+		withCredentials([string(credentialsId: 'DOCKER_CRED', variable: 'DOCKER_CRED')]) {
+		    sh "docker login -u shagunbandi -p ${DOCKER_CRED}"
+		}
+    
+		sh "cd ui && ./mvnw -ntp -Pprod verify jib:build -Djib.to.image=shagunbandi/ui && cd .."
+	    }    
+
+	    stage("Deploy"){
+		sh "gcloud container clusters get-credentials final-cluster --zone us-central1-a --project payment-platform-204588"
+		sh "cd kubernetes && sh kubectl-apply.sh && cd .."
+	    }
+	}
