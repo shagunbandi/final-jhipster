@@ -35,7 +35,7 @@ swapoff -a
 sed -i '/swap / s/^\(.*\)$/#\1/g' /etc/fstab
 ```
 
-###### enable ip tables because master machine and kubernetes cluster machine will talk to each other and also pod to pod commuication will happen with this
+###### Enable ip tables because master machine and kubernetes cluster machine will talk to each other and also pod to pod commuication will happen with this
 		
 ```
 modprobe br_netfilter
@@ -236,6 +236,14 @@ Add Git Credentials
 Add Docker Password Secret File
 	Credentials -> Add Credentials -> Secret Text (Kind) -> ID = DOCKER_CRED
 ```
+
+# Links
+
+###### Please find the below useful endpoints
+	Gateway - http://ui.avengers.34.67.38.135.nip.io
+	Zipkin - http://zipkin.istio-system.34.67.38.135.nip.io
+	Grafana - http://grafana.istio-system.34.67.38.135.nip.io
+	Kiali - http://kiali.istio-system.34.67.38.135.nip.io
 
 # Debug Help
 
