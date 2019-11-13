@@ -11,6 +11,57 @@ sudo apt update
 sudo apt install openjdk-8-jdk
 ```
 
+### Install Kubernetes
+
+```
+sudo apt-get update -y
+sudo apt-get install -y apt-transport-https
+sudo su -
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+```
+
+###### Write into kubernetes.list (Copy All the lines together)
+
+```
+cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+```
+
+###### Delete swap memory
+```
+apt-get update -y
+swapoff -a
+sed -i '/swap / s/^\(.*\)$/#\1/g' /etc/fstab
+```
+
+###### enable ip tables because master machine and kubernetes cluster machine will talk to each other and also pod to pod commuication will happen with this
+		
+```
+modprobe br_netfilter
+sysctl -p 
+sudo sysctl net.bridge.bridge-nf-call-iptables=1
+```
+
+###### Install Kubernetes and Related Modules
+```
+apt-get install -y kubelet kubeadm kubectl kubernetes-cni
+systemctl daemon-reload
+systemctl start kubelet
+systemctl enable kubelet.service
+```
+
+###### Connect VM to Kubernetes Cluster
+```
+gcloud container clusters get-credentials office-cluster --zone us-central1-a
+```
+
+###### Get Pod related Info
+
+```
+kubectl get pods -n avengers
+```
+
 ### Install Jenkins
 
 ###### 1. Add the Jenkins Debian Repository
