@@ -4,6 +4,61 @@ JHipster Application with 4 microservices
 
 ## Setup
 
+### Install Java
+
+```
+sudo apt update
+sudo apt install openjdk-8-jdk
+```
+
+### Install Jenkins
+
+###### 1. Add the Jenkins Debian Repository
+
+```
+wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+```
+
+###### 2. Install Jenkins 
+
+```
+sudo apt update
+sudo apt install jenkins
+systemctl status jenkins (Check Status if installed properly or not)
+sudo systemctl restart jenkins
+```
+
+###### 3. Adjust Firewall - Open port 8080
+
+###### 4. Launch Jenkins
+
+```
+http://your_ip_or_domain:8080 
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword (Location to Password)
+Install suggested Plugins```
+```
+
+### Install Docker
+
+###### 1. Install Docker
+
+```
+curl -fsSL get.docker.com | /bin/bash 
+```
+
+###### 2. Add Jenkins user to docker group
+
+```
+sudo usermod -aG docker jenkins 
+```
+
+###### 3. Restart Jenkins
+
+```
+sudo systemctl restart jenkins
+```
+
 ### Connect to Project
 
 ```gcloud config set project payment-platform-204588```
@@ -117,5 +172,19 @@ kubectl get pods -n avengers
 ```
 
 ##### If everything is Running try http://ui.avengers.34.67.38.135.nip.io
+
+### Setup Jenkins
+
+```
+Add Plugin 
+	Manage Jenkins -> Manage Plugins -> Available -> Kubernetes Continuous Deploy Plugin
+Add Maven
+	Manage Jenkins -> Global Tool Configuration -> Add Maven
+Add Git Credentials
+	Credentials -> Add Credentials (next to global) -> Username With Password (Kind), Username and Password, ID = GIT_CRED
+Add Docker Password Secret File
+	Credentials -> Add Credentials -> Secret Text (Kind) -> ID = DOCKER_CRED
+```
+
 
 
