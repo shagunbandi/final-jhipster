@@ -1,0 +1,39 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: kibana-gateway
+  namespace: elastic-gke-logging-1
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - kibana.34.67.38.135.nip.io
+    - port:
+        number: 80
+        name: http2
+        protocol: HTTP2
+      hosts:
+        - kibana.34.67.38.135.nip.io
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: kibana-gw-virtualservice
+  namespace: elastic-gke-logging-1
+spec:
+  hosts:
+    - kibana.34.67.38.135.nip.io
+  gateways:
+    - kibana-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: elastic-gke-logging-1-kibana-svc
