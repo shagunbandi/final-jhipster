@@ -186,5 +186,18 @@ Add Docker Password Secret File
 	Credentials -> Add Credentials -> Secret Text (Kind) -> ID = DOCKER_CRED
 ```
 
+# Debug Help
 
+##### 1. You might want to give permission to docker.sock if not working as root user. 
 
+```
+sudo chmod 777 /var/run/docker.sock
+```
+
+##### 2. Docker Login is required
+
+###### Enter your username and password to login to docker
+
+```
+docker login -u <username>
+```
