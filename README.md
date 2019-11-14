@@ -261,6 +261,27 @@ sudo chmod 777 /var/run/docker.sock
 docker login -u <username>
 ```
 
+##### 3. Delete a Pod
+
+###### Get all pods with default namespace
+
+```
+kubectl get pods
+```
+
+###### Get all pods with <namespace> namespace
+
+```
+kubectl get pods -n <namespace>
+```
+
+###### Delete pods <pod-name> with <namespace> namespace
+
+```
+kubectl delete pods <pod-name> -n <namespace>
+```
+
+
 # Jenkins Pipeline
 
 	node {
