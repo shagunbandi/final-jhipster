@@ -51,9 +51,24 @@ systemctl start kubelet
 systemctl enable kubelet.service
 ```
 
-###### Connect VM to Kubernetes Cluster
+### Connect to Project
+
 ```
-gcloud container clusters get-credentials office-cluster --zone us-central1-a
+gcloud auth login 
+gcloud config set project payment-platform-204588
+```
+
+### Create GKE Cluster
+
+```
+gcloud container clusters create final-cluster  --zone us-central1-a --num-nodes 4 --machine-type n1-standard-2
+gcloud container clusters get-credentials final-cluster --zone us-central1-a
+```
+
+### Configure Kubernetes Cluseter Engine
+
+```
+kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user="shagunbandi@gmail.com"
 ```
 
 ###### Get Pod related Info
@@ -108,23 +123,6 @@ sudo usermod -aG docker jenkins
 
 ```
 sudo systemctl restart jenkins
-```
-
-### Connect to Project
-
-```gcloud config set project payment-platform-204588```
-
-### Create GKE Cluster
-
-```
-gcloud container clusters create final-cluster  --zone us-central1-a --num-nodes 4 --machine-type n1-standard-2
-gcloud container clusters get-credentials final-cluster --zone us-central1-a
-```
-
-### Configure Kubernetes Cluseter Engine
-
-```
-kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user="shagunbandi@gmail.com"
 ```
 
 ### Install Istio and Helm on your local machine
