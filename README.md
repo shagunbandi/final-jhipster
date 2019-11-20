@@ -285,7 +285,7 @@ kubectl delete pods <pod-name> -n <namespace>
 
 # Jenkins Pipeline
 
-##### Chenges in Depployment Files
+##### Changes in Depployment Files
 
 ###### add parameter 
 ```
