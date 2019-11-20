@@ -279,6 +279,9 @@ kubectl get pods -n <namespace>
 kubectl delete pods <pod-name> -n <namespace>
 ```
 
+##### 3. If Permission Error while creating cluster-admin-role
+
+###### Make sure you are the owner of the project or have enough permissions. You can check that by going to IAM roles.
 
 # Jenkins Pipeline
 
