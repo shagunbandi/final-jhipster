@@ -287,20 +287,24 @@ kubectl delete pods <pod-name> -n <namespace>
 
 	node {
 	    stage("Git clone"){
-		git credentialsId: 'GIT_CRED', url: 'https://github.com/shagunbandi/final-jhipster'
+		git credentialsId: 'GIT_CRED_MANVI', url: 'https://github.com/shagunbandi/final-jhipster'
 	    }
 
 	    stage("Maven Clean, Build, Docker Push for UI"){
-
-		withCredentials([string(credentialsId: 'DOCKER_CRED', variable: 'DOCKER_CRED')]) {
+	      withCredentials([string(credentialsId: 'DOCKER_CRED', variable: 'DOCKER_CRED')]) {
 		    sh "docker login -u shagunbandi -p ${DOCKER_CRED}"
 		}
-    
-		sh "cd ui && ./mvnw -ntp -Pprod verify jib:build -Djib.to.image=shagunbandi/ui && cd .."
+	       sh "git rev-parse HEAD > .git/commit-id"
+		def commit_id = readFile('.git/commit-id').trim()
+	       sh "cd ui && ./mvnw -ntp -Pprod verify jib:build -Djib.to.image=shagunbandi/ui:${commit_id} && cd .."
 	    }    
 
 	    stage("Deploy"){
 		sh "gcloud container clusters get-credentials final-cluster --zone us-central1-a --project payment-platform-204588"
+
 		sh "cd kubernetes && sh kubectl-apply.sh && cd .."
+		sh "git rev-parse HEAD > .git/commit-id"
+		def commit_id = readFile('.git/commit-id').trim()
+		sh "kubectl set image deployment.v1.apps/ui ui-app=shagunbandi/ui:${commit_id} -n=avengers"
 	    }
-	}
+	   }
