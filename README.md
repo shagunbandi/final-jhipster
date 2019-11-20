@@ -285,6 +285,16 @@ kubectl delete pods <pod-name> -n <namespace>
 
 # Jenkins Pipeline
 
+##### Chenges in Depployment Files
+
+###### add parameter 
+```
+spec > strategy > type: Recreate
+spec > template > containers > imagePullPolicy: Always
+```
+
+##### This is the pipeline script. change the url, DOCKER_CRED, Docker Username, tagname, project name accordingly.
+
 	node {
 	    stage("Git clone"){
 		git credentialsId: 'GIT_CRED_MANVI', url: 'https://github.com/shagunbandi/final-jhipster'
