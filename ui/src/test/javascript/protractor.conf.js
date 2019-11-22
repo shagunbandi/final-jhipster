@@ -10,17 +10,16 @@ exports.config = {
   ],
 
   capabilities: {
-    browserName: 'chrome',
-    chromeOptions: {
-        args: process.env.JHI_E2E_HEADLESS
-          ? [ '--headless', '--disable-gpu', '--window-size=800,600' ]
-          : [ '--disable-gpu', '--window-size=800,600' ]
+    'browserName': 'chrome',
+    'chrome': {
+        binary:'usr/bin/google-chrome-stable',
+        args:  ['--headless', '--disable-gpu', '--no-sandbox', '--disable-extensions', '--disable-dev-shm-usage']
     }
   },
 
   directConnect: true,
 
-  baseUrl: 'http://localhost:8080/',
+  baseUrl: 'http://localhost:8050/',
 
   framework: 'mocha',
 
