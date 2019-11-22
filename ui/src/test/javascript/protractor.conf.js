@@ -10,10 +10,12 @@ exports.config = {
   ],
 
   capabilities: {
-    'browserName': 'chrome',
-    'chrome': {
-        binary:'usr/bin/google-chrome-stable',
-        args:  ['--headless', '--disable-gpu', '--no-sandbox', '--disable-extensions', '--disable-dev-shm-usage']
+    'browserName': 'firefox',
+    firefoxOptions: {
+      args: ['--headless']
+    },
+    'moz:firefoxOptions': {
+      args: [ '--headless' ]
     }
   },
 
