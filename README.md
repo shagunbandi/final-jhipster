@@ -295,26 +295,51 @@ spec > template > containers > imagePullPolicy: Always
 
 ##### This is the pipeline script. change the url, DOCKER_CRED, Docker Username, tagname, project name accordingly.
 
-	node {
-	    stage("Git clone"){
-		git credentialsId: 'GIT_CRED_MANVI', url: 'https://github.com/shagunbandi/final-jhipster'
-	    }
+	pipeline {
+	    agent any
 
-	    stage("Maven Clean, Build, Docker Push for UI"){
-	      withCredentials([string(credentialsId: 'DOCKER_CRED', variable: 'DOCKER_CRED')]) {
-		    sh "docker login -u shagunbandi -p ${DOCKER_CRED}"
+	    environment {
+		GIT_URL = "https://github.com/manvinirwal/final-jhipster"
+		DOCKER_BASE = "shagunbandi"
+		BRIDGE = "bridge"
+		CLUSTER_NAME = "final-cluster"
+		PROJECT_ID = "payment-platform-204588"
+		NAMESPACE = "avengers"
+		COMMIT_ID = find_commit_id()
+	    }
+	    stages {
+
+		stage("Git clone"){
+		    steps {
+			git credentialsId: 'GIT_CRED_MANVI', url: "${GIT_URL}"
+		    }
 		}
-	       sh "git rev-parse HEAD > .git/commit-id"
-		def commit_id = readFile('.git/commit-id').trim()
-	       sh "cd ui && ./mvnw -ntp -Pprod verify jib:build -Djib.to.image=shagunbandi/ui:${commit_id} && cd .."
-	    }    
 
-	    stage("Deploy"){
-		sh "gcloud container clusters get-credentials final-cluster --zone us-central1-a --project payment-platform-204588"
+		stage("Maven Clean, Build, Docker Push for UI"){
+		    agent { label 'master' }
+		    steps{
+			withCredentials([string(credentialsId: 'DOCKER_CRED', variable: 'DOCKER_CRED')]) {
+			    sh "docker login -u ${DOCKER_BASE} -p ${DOCKER_CRED}"
+			}
+			sh "cd ui && ./mvnw -ntp -Pprod verify jib:build -Djib.to.image=${DOCKER_BASE}/ui:${env.COMMIT_ID} && cd .."
+			sh 'cd ui && npm run e2e && cd..'
+		    }
+		}
 
-		sh "cd kubernetes && sh kubectl-apply.sh && cd .."
-		sh "git rev-parse HEAD > .git/commit-id"
-		def commit_id = readFile('.git/commit-id').trim()
-		sh "kubectl set image deployment.v1.apps/ui ui-app=shagunbandi/ui:${commit_id} -n=avengers"
+		stage("Deploy"){
+		    agent { label 'master' }
+		    steps {
+			sh "gcloud container clusters get-credentials ${CLUSTER_NAME} --zone us-central1-a --project ${PROJECT_ID}"
+			sh "cd kubernetes && sh kubectl-apply.sh && cd .."
+			sh "kubectl set image deployment.v1.apps/ui ui-app=${DOCKER_BASE}/ui:${env.COMMIT_ID} -n=${NAMESPACE}"
+		    }
+		}
 	    }
-	   }
+	}
+
+	def find_commit_id() {
+	    node('master') {
+		sh "git rev-parse HEAD > .git/commit-id"
+		return readFile('.git/commit-id').trim() 
+	    }
+	}
